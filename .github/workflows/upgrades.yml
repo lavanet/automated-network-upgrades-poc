@@ -1,0 +1,33 @@
+name: 'Network upgrade trigger'
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: default
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Trigger Network Upgrade
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GIT_TOKEN }}
+        script: |
+          github.rest.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: "network-upgrades",
+            workflow_id: "upgrade.yml",
+            ref: "main",
+            inputs: {
+              "tag_to_deploy": context.ref
+            }
+          })
