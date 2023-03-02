@@ -17,8 +17,29 @@ jobs:
       run:
         shell: bash
     steps:
+<<<<<<< Updated upstream
+=======
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Confirm tag is in main branch
+      id: tag_main
+      run: |
+        branches=$(git branch -r --contains tags/$GITHUB_REF_NAME)
+        for branch in $branches; do
+          if [[ $branch == "origin/main" ]]; then
+            echo "CHECK=true" >> $GITHUB_OUTPUT
+          fi
+        done
+
+        if [ "$onProtectedBranch" == false ]; then
+          echo "CHECK=false" >> $GITHUB_OUTPUT
+        fi
+
+>>>>>>> Stashed changes
     - name: Trigger Network Upgrade
       uses: actions/github-script@v6
+      if: ${{ steps.tag_main.outputs.CHECK }}
       with:
         github-token: ${{ secrets.GIT_TOKEN }}
         script: |
