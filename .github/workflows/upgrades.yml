@@ -17,8 +17,6 @@ jobs:
       run:
         shell: bash
     steps:
-<<<<<<< Updated upstream
-=======
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -36,7 +34,6 @@ jobs:
           echo "CHECK=false" >> $GITHUB_OUTPUT
         fi
 
->>>>>>> Stashed changes
     - name: Trigger Network Upgrade
       uses: actions/github-script@v6
       if: ${{ steps.tag_main.outputs.CHECK }}
