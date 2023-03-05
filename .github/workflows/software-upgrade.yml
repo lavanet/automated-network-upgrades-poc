@@ -1,4 +1,4 @@
-name: 'Network upgrade trigger'
+name: 'Network upgrade trigger - Version'
 
 on:
   push:
@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  upgrade:
+    name: 'Network upgrade trigger - Version'
     runs-on: ubuntu-latest
     environment: default
     defaults:
@@ -46,6 +46,7 @@ jobs:
             workflow_id: "upgrade.yml",
             ref: "main",
             inputs: {
+              "type_of_deployment": "version",
               "tag_to_deploy": context.ref
             }
           })
