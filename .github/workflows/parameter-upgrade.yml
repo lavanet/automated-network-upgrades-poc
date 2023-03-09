@@ -1,12 +1,10 @@
 name: 'Network upgrade trigger - Parameters'
 
 on:
-  workflow_dispatch:
-    inputs:
-      parameters_json:
-        description: "JSON with parameters to change"
-        required: true
-        type: string
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'parameters/**'
 
 jobs:
   upgrade:
@@ -27,8 +25,8 @@ jobs:
         script: |
           github.rest.actions.createWorkflowDispatch({
             owner: context.repo.owner,
-            repo: "network-upgrades",
-            workflow_id: "upgrade.yml",
+            repo: "devops",
+            workflow_id: "network-upgrades-receiver.yml",
             ref: "main",
             inputs: {
               "type_of_deployment": "parameters",
