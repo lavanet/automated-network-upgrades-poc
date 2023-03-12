@@ -1,0 +1,12 @@
+{
+    "title": "Test Proposal",
+    "description": "testing, testing, 1, 2, 3",
+    "changes": [
+        {
+            "subspace": "pairing",
+            "key": "SlashLimit",
+            "value": "1.0000"
+        }
+    ],
+    "deposit": "10000000ulava"
+}
