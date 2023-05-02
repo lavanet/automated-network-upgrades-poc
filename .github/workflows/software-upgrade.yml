@@ -18,6 +18,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Confirm tag is in main branch
       id: tag_main
@@ -39,16 +41,19 @@ jobs:
       id: tags_populate
       run: |
         new_tags=$(git tag --sort=-version:refname | head -n 10)
-        echo "new_tags=$new_tags" >> $GITHUB_OUTPUT
+        new_tags_array=$(echo "$new_tags" | tr '\n' ' ')
+        echo "$new_tags_array"
+        echo "new_tags_array=$new_tags_array" >> $GITHUB_OUTPUT
 
-    - name: Checkout Lava repository
+    - name: Checkout DevOps repository
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.GIT_TOKEN }}
         repository: "lavanet/devops"
+
+    - name: Populate DevOps repository with new tags
       run: |
-        new_tags=${{ steps.tags_populate.outputs.new_tags }}
-        new_tags_array=$(echo "$new_tags" | tr '\n' ' ')
+        new_tags_array=$(echo '${{ steps.tags_populate.outputs.new_tags_array }}' | tr '\n' ' ')
 
         index=0
         for version in $new_tags_array; do
